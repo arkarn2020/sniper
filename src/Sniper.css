@@ -1,0 +1,44 @@
+.webcam-container {
+  border: 0px solid red;
+  min-width: max-content;
+  /* min-height: max-content; */
+  display: flex;
+  /* justify-content: center; */
+  /* align-items: center; */
+  flex-direction: column;
+  position: relative;
+}
+
+.webcam-stream {
+  /* border: 2px solid red; */
+}
+
+.camera-logo {
+  position: absolute;
+  top: 25%;
+  right: 2%;
+  padding: 5px;
+  border-radius: 50%;
+  border: 1px solid white;
+  cursor: pointer;
+}
+
+.upload-logo {
+  position: absolute;
+  top: 35%;
+  right: 2%;
+  padding: 5px;
+  border-radius: 50%;
+  border: 1px solid white;
+  cursor: pointer;
+}
+
+.toggle-logo {
+  position: absolute;
+  top: 35%;
+  right: 2%;
+  padding: 5px;
+  border-radius: 50%;
+  border: 1px solid white;
+  cursor: pointer;
+}

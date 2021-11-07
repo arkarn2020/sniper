@@ -84,7 +84,7 @@ export const ImageCapture = () => {
 
   // video recording
   // size of video
-  const handleDataAvailable = React.useCallback(
+  const handleDataAvailable = useCallback(
     ({ data }) => {
       if (data.size > 0) {
         setRecordedChunks((prev) => prev.concat(data));
@@ -94,7 +94,7 @@ export const ImageCapture = () => {
   );
 
   // start recording
-  const handleStartCaptureClick = React.useCallback(() => {
+  const handleStartCaptureClick = useCallback(() => {
     setCapturing(true);
     mediaRecorderRef.current = new MediaRecorder(webcamRef.current.stream, {
       mimeType: "video/webm",
@@ -107,13 +107,13 @@ export const ImageCapture = () => {
   }, [webcamRef, setCapturing, mediaRecorderRef, handleDataAvailable]);
 
   // stop recording
-  const handleStopCaptureClick = React.useCallback(() => {
+  const handleStopCaptureClick = useCallback(() => {
     mediaRecorderRef.current.stop();
     setCapturing(false);
   }, [mediaRecorderRef, setCapturing]);
 
   // download recording
-  const handleDownload = React.useCallback(() => {
+  const handleDownload = useCallback(() => {
     if (recordedChunks.length) {
       const blob = new Blob(recordedChunks, {
         type: "video/webm",
