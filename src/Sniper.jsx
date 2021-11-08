@@ -1,6 +1,8 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import Webcam from "react-webcam";
+
 import "./Sniper.css";
+
 import CamLogo from "./assets/CamLogo";
 import UploadLogo from "./assets/UploadLogo";
 import CamToggleLogo from "./assets/CamToggleLogo";
@@ -45,13 +47,14 @@ const Sniper = () => {
   const webcamRef = useRef(null);
 
   // constraints
-  const videoConstraints = {
+  const VideoConstraints = {
     // width: 320,
     width: width,
     // height: 300,
     height: height,
-    // facingMode: 'user',
   };
+
+  console.log(width, height);
 
   const capture = useCallback(() => {
     const imageSrc = webcamRef.current.getScreenshot();
@@ -89,12 +92,19 @@ const Sniper = () => {
             audio={false}
             ref={webcamRef}
             screenshotFormat="image/jpeg"
-            videoConstraints={{ ...videoConstraints, facingMode: camMode }}
+            screenshotQuality="0.95"
+            videoConstraints={{ ...VideoConstraints, facingMode: camMode }}
             className="webcam-stream"
             onClick={handleCapture}
           />
         ) : (
-          <img src={image} alt={image} onClick={handleRetake} width={width} />
+          <img
+            src={image}
+            alt={image}
+            onClick={handleRetake}
+            // width={width}
+            // height={height}
+          />
         )}
         {/* camera snap logo button  */}
         {image !== "" ? (
