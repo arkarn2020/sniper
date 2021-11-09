@@ -73,6 +73,10 @@ const Sniper = () => {
     // aspectRatio: 1.77777,
   };
 
+  const AudioConstraints = {
+    echoCancellation: true,
+  };
+
   // console.log(width, height);
 
   const capture = useCallback(() => {
@@ -156,11 +160,12 @@ const Sniper = () => {
         <div className="webcam-wrapper">
           {image === "" ? (
             <Webcam
-              audio={false}
+              audio={true}
               ref={webcamRef}
               screenshotFormat="image/jpeg"
               screenshotQuality="0.95"
               videoConstraints={{ ...VideoConstraints, facingMode: camMode }}
+              audioConstraints={{ ...AudioConstraints }}
               className="webcam-stream"
             />
           ) : (
