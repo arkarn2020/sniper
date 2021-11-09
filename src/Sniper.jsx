@@ -6,6 +6,9 @@ import "./Sniper.css";
 import CamLogo from "./assets/CamLogo";
 import UploadLogo from "./assets/UploadLogo";
 import CamToggleLogo from "./assets/CamToggleLogo";
+import VideoLogo from "./assets/VideoLogo";
+import DownloadLogo from "./assets/DownloadLogo";
+import StopRecord from "./assets/StopRecord";
 
 const Sniper = () => {
   // accessing global window and destructuring width and height
@@ -45,16 +48,32 @@ const Sniper = () => {
   const { width, height } = useWindowDimensions();
   // for accessing Webcam component
   const webcamRef = useRef(null);
+  // for accessing MediaRecorder
+  const mediaRecorderRef = useRef(null);
+  // capturing video
+  const [recording, setRecording] = useState(false);
+  // recorded video
+  const [recordedVideo, setRecordedVideo] = useState([]);
 
   // constraints
   const VideoConstraints = {
     // width: 320,
-    width: width,
+    width: {
+      min: 300,
+      ideal: width,
+      max: 1920,
+    },
     // height: 300,
-    height: height,
+    height: {
+      min: 600,
+      ideal: height,
+      max: 1080,
+    },
+    // resizeMode: "crop-and-scale",
+    // aspectRatio: 1.77777,
   };
 
-  console.log(width, height);
+  // console.log(width, height);
 
   const capture = useCallback(() => {
     const imageSrc = webcamRef.current.getScreenshot();
@@ -84,64 +103,136 @@ const Sniper = () => {
     else setCamMode("environment");
   };
 
+  // handle size of video being recorded
+  const handleDataAvailable = useCallback(
+    ({ data }) => {
+      if (data.size > 0) {
+        setRecordedVideo((prev) => prev.concat(data));
+      }
+    },
+    [setRecordedVideo]
+  );
+
+  // start recording
+  const handleStartVideoRecording = useCallback(() => {
+    setRecording(true);
+    mediaRecorderRef.current = new MediaRecorder(webcamRef.current.stream, {
+      mimeType: "video/webm",
+    });
+    mediaRecorderRef.current.addEventListener(
+      "dataavailable",
+      handleDataAvailable
+    );
+    mediaRecorderRef.current.start();
+  }, [webcamRef, setRecording, mediaRecorderRef, handleDataAvailable]);
+
+  // stop recording
+  const handleStopVideoRecording = useCallback(() => {
+    mediaRecorderRef.current.stop();
+    setRecording(false);
+  }, [mediaRecorderRef, setRecording]);
+
+  // handle download
+  const handleDownload = useCallback(() => {
+    if (recordedVideo.length) {
+      const blob = new Blob(recordedVideo, {
+        type: "video/webm",
+      });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      document.body.appendChild(a);
+      a.style = "display: none";
+      a.href = url;
+      a.download = "stream-capture.webm";
+      a.click();
+      window.URL.revokeObjectURL(url);
+      setRecordedVideo([]);
+    }
+  }, [recordedVideo]);
+
   return (
     <>
       <div className="webcam-container">
-        {image === "" ? (
-          <Webcam
-            audio={false}
-            ref={webcamRef}
-            screenshotFormat="image/jpeg"
-            screenshotQuality="0.95"
-            videoConstraints={{ ...VideoConstraints, facingMode: camMode }}
-            className="webcam-stream"
-            onClick={handleCapture}
-          />
-        ) : (
-          <img
-            src={image}
-            alt={image}
-            onClick={handleRetake}
-            // width={width}
-            // height={height}
-          />
-        )}
-        {/* camera snap logo button  */}
-        {image !== "" ? (
-          <img
-            src={CamLogo}
-            alt="cam"
-            width={25}
-            className="camera-logo"
-            onClick={handleRetake}
-          />
-        ) : (
-          <img
-            src={CamLogo}
-            alt="cam"
-            width={25}
-            className="camera-logo"
-            onClick={handleCapture}
-          />
-        )}
-        {/* upload captured image and toggle camera logo button  */}
-        {image !== "" ? (
-          <img
-            src={UploadLogo}
-            alt="upload"
-            width={25}
-            className="upload-logo"
-            onClick={handleSubmit}
-          />
-        ) : (
-          <img
-            src={CamToggleLogo}
-            alt="camtoggle"
-            width={25}
-            className="toggle-logo"
-            onClick={handleToggle}
-          />
-        )}
+        <div className="webcam-wrapper">
+          {image === "" ? (
+            <Webcam
+              audio={true}
+              ref={webcamRef}
+              screenshotFormat="image/jpeg"
+              screenshotQuality="0.95"
+              videoConstraints={{ ...VideoConstraints, facingMode: camMode }}
+              className="webcam-stream"
+              // onClick={handleCapture}
+            />
+          ) : (
+            <img src={image} alt={image} onClick={handleRetake} />
+          )}
+          {/* camera snap logo button  */}
+          {image !== "" ? (
+            <img
+              src={CamLogo}
+              alt="cam"
+              width={25}
+              className="camera-logo"
+              onClick={handleRetake}
+            />
+          ) : (
+            <img
+              src={CamLogo}
+              alt="cam"
+              width={25}
+              className="camera-logo"
+              onClick={handleCapture}
+            />
+          )}
+          {/* upload captured image and toggle camera logo button  */}
+          {image !== "" ? (
+            <img
+              src={UploadLogo}
+              alt="upload"
+              width={25}
+              className="upload-logo"
+              onClick={handleSubmit}
+            />
+          ) : (
+            <img
+              src={CamToggleLogo}
+              alt="camtoggle"
+              width={25}
+              className="toggle-logo"
+              onClick={handleToggle}
+            />
+          )}
+          {image === "" && !recording && (
+            <img
+              src={VideoLogo}
+              alt="start-record"
+              width={25}
+              className="recording-logo"
+              onClick={handleStartVideoRecording}
+            />
+          )}
+
+          {image === "" && recording && (
+            <img
+              src={StopRecord}
+              alt="stop-record"
+              width={25}
+              className="recording-logo"
+              onClick={handleStopVideoRecording}
+            />
+          )}
+
+          {image === "" && recordedVideo.length > 0 && (
+            <img
+              src={DownloadLogo}
+              alt="download"
+              width={25}
+              className="download"
+              onClick={handleDownload}
+            />
+          )}
+        </div>
       </div>
     </>
   );

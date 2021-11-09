@@ -1,19 +1,27 @@
 .webcam-container {
   border: 4px solid springgreen;
-  /* min-width: max-content; */
-  min-height: max-content;
+}
+
+/* .webcam-tabs { */
+/* border: 2px solid crimson; */
+/* display: flex; */
+/* flex-direction: row; */
+/* justify-content: space-between; */
+/* align-items: stretch; */
+/* } */
+
+.webcam-wrapper {
+  /* border: 4px solid blue; */
+  margin: auto;
   display: flex;
-  justify-content: center;
-  /* align-items: center; */
   flex-direction: column;
+  align-items: stretch;
   position: relative;
 }
 
 .webcam-stream {
   border: 4px dashed magenta;
-  /* flex: 1 0 auto; */
-  margin: 0;
-  padding: 0;
+  justify-content: center;
 }
 
 .camera-logo {
@@ -39,6 +47,26 @@
 .toggle-logo {
   position: absolute;
   top: 35%;
+  right: 2%;
+  padding: 5px;
+  border-radius: 50%;
+  border: 2px solid white;
+  cursor: pointer;
+}
+
+.recording-logo {
+  position: absolute;
+  top: 45%;
+  right: 2%;
+  padding: 5px;
+  border-radius: 50%;
+  border: 2px solid white;
+  cursor: pointer;
+}
+
+.download {
+  position: absolute;
+  top: 55%;
   right: 2%;
   padding: 5px;
   border-radius: 50%;
