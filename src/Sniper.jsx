@@ -156,27 +156,18 @@ const Sniper = () => {
         <div className="webcam-wrapper">
           {image === "" ? (
             <Webcam
-              audio={true}
+              audio={false}
               ref={webcamRef}
               screenshotFormat="image/jpeg"
               screenshotQuality="0.95"
               videoConstraints={{ ...VideoConstraints, facingMode: camMode }}
               className="webcam-stream"
-              // onClick={handleCapture}
             />
           ) : (
             <img src={image} alt={image} onClick={handleRetake} />
           )}
-          {/* camera snap logo button  */}
-          {image !== "" ? (
-            <img
-              src={CamLogo}
-              alt="cam"
-              width={25}
-              className="camera-logo"
-              onClick={handleRetake}
-            />
-          ) : (
+          {/* snap photo logo button  */}
+          {image === "" && !recording ? (
             <img
               src={CamLogo}
               alt="cam"
@@ -184,17 +175,9 @@ const Sniper = () => {
               className="camera-logo"
               onClick={handleCapture}
             />
-          )}
-          {/* upload captured image and toggle camera logo button  */}
-          {image !== "" ? (
-            <img
-              src={UploadLogo}
-              alt="upload"
-              width={25}
-              className="upload-logo"
-              onClick={handleSubmit}
-            />
-          ) : (
+          ) : null}
+          {/* toggle camera logo button  */}
+          {image === "" && !recording ? (
             <img
               src={CamToggleLogo}
               alt="camtoggle"
@@ -202,7 +185,18 @@ const Sniper = () => {
               className="toggle-logo"
               onClick={handleToggle}
             />
-          )}
+          ) : null}
+          {/* upload snapped photot */}
+          {image !== "" && !recording ? (
+            <img
+              src={UploadLogo}
+              alt="upload"
+              width={25}
+              className="upload-logo"
+              onClick={handleSubmit}
+            />
+          ) : null}
+          {/* start video recording logo */}
           {image === "" && !recording && (
             <img
               src={VideoLogo}
@@ -212,7 +206,7 @@ const Sniper = () => {
               onClick={handleStartVideoRecording}
             />
           )}
-
+          {/* stop video recording logo */}
           {image === "" && recording && (
             <img
               src={StopRecord}
@@ -222,8 +216,8 @@ const Sniper = () => {
               onClick={handleStopVideoRecording}
             />
           )}
-
-          {image === "" && recordedVideo.length > 0 && (
+          {/* download recorded video */}
+          {image === "" && recordedVideo.length > 0 && !recording && (
             <img
               src={DownloadLogo}
               alt="download"
