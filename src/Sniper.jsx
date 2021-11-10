@@ -42,11 +42,11 @@ const Sniper = () => {
     const [seconds, setSeconds] = useState(0);
     const [isActive, setIsActive] = useState(false);
 
-    function toggle() {
+    function toggleTimer() {
       setIsActive(!isActive);
     }
 
-    function reset() {
+    function resetTimer() {
       setSeconds(0);
       setIsActive(false);
     }
@@ -68,8 +68,8 @@ const Sniper = () => {
     }, [isActive, seconds]);
 
     return {
-      toggle,
-      reset,
+      toggleTimer,
+      resetTimer,
       displayTimer,
       seconds,
       isActive,
@@ -93,7 +93,7 @@ const Sniper = () => {
   // recorded video
   const [recordedVideo, setRecordedVideo] = useState([]);
   //access time
-  const { seconds, toggle } = useTimer();
+  const { seconds, toggleTimer, resetTimer } = useTimer();
 
   // constraints
   const VideoConstraints = {
@@ -166,15 +166,22 @@ const Sniper = () => {
       handleDataAvailable
     );
     mediaRecorderRef.current.start();
-    toggle();
-  }, [webcamRef, setRecording, mediaRecorderRef, handleDataAvailable, toggle]);
+    toggleTimer();
+  }, [
+    webcamRef,
+    setRecording,
+    mediaRecorderRef,
+    handleDataAvailable,
+    toggleTimer,
+  ]);
 
   // stop recording
   const handleStopVideoRecording = useCallback(() => {
     mediaRecorderRef.current.stop();
-    toggle();
+    toggleTimer();
+    resetTimer();
     setRecording(false);
-  }, [mediaRecorderRef, setRecording, toggle]);
+  }, [mediaRecorderRef, setRecording, toggleTimer, resetTimer]);
 
   // handle download
   const handleDownload = useCallback(() => {
