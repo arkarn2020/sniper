@@ -97,19 +97,19 @@ const Sniper = () => {
 
   // constraints
   const VideoConstraints = {
-    // width: 320,
-    width: {
-      min: 300,
-      ideal: width,
-      // max: 1920,
-    },
-    // height: 300,
-    height: {
-      min: 600,
-      // ideal: height * 0.843,
-      ideal: height,
-      // max: 1080,
-    },
+    width: width,
+    height: height,
+    // width: {
+    //   min: 300,
+    //   ideal: width,
+    //   max: 1920,
+    // },
+    // height: {
+    //   min: 600,
+    //   // ideal: height * 0.843,
+    //   ideal: height,
+    //   max: 1080,
+    // },
     // resizeMode: "crop-and-scale",
     // aspectRatio: 1.77777,
   };
