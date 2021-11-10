@@ -101,14 +101,14 @@ const Sniper = () => {
     width: {
       min: 300,
       ideal: width,
-      max: 1920,
+      // max: 1920,
     },
     // height: 300,
     height: {
       min: 600,
-      ideal: height * 0.843,
-      // ideal: height,
-      max: 1080,
+      // ideal: height * 0.843,
+      ideal: height,
+      // max: 1080,
     },
     // resizeMode: "crop-and-scale",
     // aspectRatio: 1.77777,
