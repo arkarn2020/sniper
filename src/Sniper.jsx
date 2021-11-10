@@ -8,7 +8,7 @@ import UploadLogo from "./assets/UploadLogo";
 import CamToggleLogo from "./assets/CamToggleLogo";
 import VideoLogo from "./assets/VideoLogo";
 import DownloadLogo from "./assets/DownloadLogo";
-import StopRecord from "./assets/StopRecord";
+import StopRecordLogo from "./assets/StopRecord";
 
 const Sniper = () => {
   // accessing global window and destructuring width and height
@@ -38,6 +38,44 @@ const Sniper = () => {
     return windowDimensions;
   };
 
+  const useTimer = () => {
+    const [seconds, setSeconds] = useState(0);
+    const [isActive, setIsActive] = useState(false);
+
+    function toggle() {
+      setIsActive(!isActive);
+    }
+
+    function reset() {
+      setSeconds(0);
+      setIsActive(false);
+    }
+
+    function displayTimer() {
+      console.log(seconds);
+    }
+
+    useEffect(() => {
+      let interval = null;
+      if (isActive) {
+        interval = setInterval(() => {
+          setSeconds((seconds) => seconds + 1);
+        }, 1000);
+      } else if (!isActive && seconds !== 0) {
+        clearInterval(interval);
+      }
+      return () => clearInterval(interval);
+    }, [isActive, seconds]);
+
+    return {
+      toggle,
+      reset,
+      displayTimer,
+      seconds,
+      isActive,
+    };
+  };
+
   // contains image file
   const [image, setImage] = useState("");
   // camera of device
@@ -54,6 +92,8 @@ const Sniper = () => {
   const [recording, setRecording] = useState(false);
   // recorded video
   const [recordedVideo, setRecordedVideo] = useState([]);
+  //access time
+  const { seconds, toggle } = useTimer();
 
   // constraints
   const VideoConstraints = {
@@ -76,8 +116,6 @@ const Sniper = () => {
   const AudioConstraints = {
     echoCancellation: true,
   };
-
-  // console.log(width, height);
 
   const capture = useCallback(() => {
     const imageSrc = webcamRef.current.getScreenshot();
@@ -128,13 +166,15 @@ const Sniper = () => {
       handleDataAvailable
     );
     mediaRecorderRef.current.start();
-  }, [webcamRef, setRecording, mediaRecorderRef, handleDataAvailable]);
+    toggle();
+  }, [webcamRef, setRecording, mediaRecorderRef, handleDataAvailable, toggle]);
 
   // stop recording
   const handleStopVideoRecording = useCallback(() => {
     mediaRecorderRef.current.stop();
+    toggle();
     setRecording(false);
-  }, [mediaRecorderRef, setRecording]);
+  }, [mediaRecorderRef, setRecording, toggle]);
 
   // handle download
   const handleDownload = useCallback(() => {
@@ -213,13 +253,23 @@ const Sniper = () => {
           )}
           {/* stop video recording logo */}
           {image === "" && recording && (
-            <img
-              src={StopRecord}
-              alt="stop-record"
-              width={25}
-              className="recording-logo"
-              onClick={handleStopVideoRecording}
-            />
+            <span>
+              <span className="timer">
+                <span className="digits-min">
+                  {("0" + Math.floor((seconds / 60) % 60)).slice(-2)}:
+                </span>
+                <span className="digits-sec">
+                  {("0" + Math.floor(seconds % 60)).slice(-2)}
+                </span>
+              </span>
+              <img
+                src={StopRecordLogo}
+                alt="stop-record"
+                width={25}
+                className="recording-logo"
+                onClick={handleStopVideoRecording}
+              />
+            </span>
           )}
           {/* download recorded video */}
           {image === "" && recordedVideo.length > 0 && !recording && (
