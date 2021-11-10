@@ -23,7 +23,7 @@
 .camera-logo {
   position: absolute;
   top: 25%;
-  right: 2%;
+  right: 5%;
   padding: 5px;
   border-radius: 50%;
   border: 2px solid white;
@@ -33,7 +33,7 @@
 .upload-logo {
   position: absolute;
   top: 35%;
-  right: 2%;
+  right: 5%;
   padding: 5px;
   border-radius: 50%;
   border: 2px solid white;
@@ -43,7 +43,7 @@
 .toggle-logo {
   position: absolute;
   top: 35%;
-  right: 2%;
+  right: 5%;
   padding: 5px;
   border-radius: 50%;
   border: 2px solid white;
@@ -53,7 +53,7 @@
 .recording-logo {
   position: absolute;
   top: 45%;
-  right: 2%;
+  right: 5%;
   padding: 5px;
   border-radius: 50%;
   border: 2px solid white;
@@ -63,7 +63,7 @@
 .timer {
   position: absolute;
   top: 55%;
-  right: 2%;
+  right: 5%;
   padding: 5px;
   color: crimson;
   font-size: 1.2rem;
@@ -75,7 +75,7 @@
 .download {
   position: absolute;
   top: 55%;
-  right: 2%;
+  right: 5%;
   padding: 5px;
   border-radius: 50%;
   border: 2px solid white;
