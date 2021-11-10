@@ -8,7 +8,7 @@ import UploadLogo from "./assets/UploadLogo";
 import CamToggleLogo from "./assets/CamToggleLogo";
 import VideoLogo from "./assets/VideoLogo";
 import DownloadLogo from "./assets/DownloadLogo";
-import StopRecordLogo from "./assets/StopRecord";
+import StopRecordLogo from "./assets/StopRecordLogo";
 
 const Sniper = () => {
   // accessing global window and destructuring width and height
