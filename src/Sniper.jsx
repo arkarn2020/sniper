@@ -106,7 +106,8 @@ const Sniper = () => {
     // height: 300,
     height: {
       min: 600,
-      ideal: height,
+      ideal: height * 0.843,
+      // ideal: height,
       max: 1080,
     },
     // resizeMode: "crop-and-scale",
