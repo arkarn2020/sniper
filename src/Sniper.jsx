@@ -99,26 +99,26 @@ const Sniper = () => {
 
   // constraints
   const VideoConstraints = {
-    width: width,
-    height: height,
-    // width: {
-    //   min: 300,
-    //   ideal: width,
-    //   max: 1920,
-    // },
-    // height: {
-    //   min: 600,
-    //   // ideal: height * 0.843,
-    //   ideal: height,
-    //   max: 1080,
-    // },
+    // width: width,
+    // height: height,
+    width: {
+      min: 320,
+      ideal: width,
+      max: 1920,
+    },
+    height: {
+      min: 640,
+      // ideal: height * 0.843,
+      ideal: height,
+      max: 1080,
+    },
     // resizeMode: "crop-and-scale",
     // aspectRatio: 1.77777,
   };
 
-  // const AudioConstraints = {
-  //   echoCancellation: false,
-  // };
+  const AudioConstraints = {
+    echoCancellation: true,
+  };
 
   const capture = useCallback(() => {
     const imageSrc = webcamRef.current.getScreenshot();
@@ -169,7 +169,7 @@ const Sniper = () => {
       handleDataAvailable
     );
     mediaRecorderRef.current.start();
-    setCheckMute(false);
+    // setCheckMute(false);
     toggleTimer();
   }, [
     webcamRef,
@@ -182,7 +182,7 @@ const Sniper = () => {
   // stop recording
   const handleStopVideoRecording = useCallback(() => {
     mediaRecorderRef.current.stop();
-    setCheckMute(true);
+    // setCheckMute(true);
     toggleTimer();
     resetTimer();
     setRecordedVideo([]);
@@ -219,8 +219,9 @@ const Sniper = () => {
               ref={webcamRef}
               screenshotFormat="image/jpeg"
               screenshotQuality="0.95"
+              imageSmoothing={true}
               videoConstraints={{ ...VideoConstraints, facingMode: camMode }}
-              // audioConstraints={{ ...AudioConstraints }}
+              audioConstraints={{ ...AudioConstraints }}
               // audioConstraints={false}
               className="webcam-stream"
             />
