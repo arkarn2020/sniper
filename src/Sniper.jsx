@@ -78,6 +78,8 @@ const Sniper = () => {
 
   // contains image file
   const [image, setImage] = useState("");
+  // audio of webcam
+  const [checkMute, setCheckMute] = useState(true);
   // camera of device
   // cammode = 'user' implies user facing camera
   // cammode = 'environment' implies back camera
@@ -114,9 +116,9 @@ const Sniper = () => {
     // aspectRatio: 1.77777,
   };
 
-  const AudioConstraints = {
-    echoCancellation: true,
-  };
+  // const AudioConstraints = {
+  //   echoCancellation: false,
+  // };
 
   const capture = useCallback(() => {
     const imageSrc = webcamRef.current.getScreenshot();
@@ -167,6 +169,7 @@ const Sniper = () => {
       handleDataAvailable
     );
     mediaRecorderRef.current.start();
+    setCheckMute(false);
     toggleTimer();
   }, [
     webcamRef,
@@ -179,8 +182,10 @@ const Sniper = () => {
   // stop recording
   const handleStopVideoRecording = useCallback(() => {
     mediaRecorderRef.current.stop();
+    setCheckMute(true);
     toggleTimer();
     resetTimer();
+    setRecordedVideo([]);
     setRecording(false);
   }, [mediaRecorderRef, setRecording, toggleTimer, resetTimer]);
 
@@ -199,6 +204,7 @@ const Sniper = () => {
       a.click();
       window.URL.revokeObjectURL(url);
       setRecordedVideo([]);
+      setCheckMute(true);
     }
   }, [recordedVideo]);
 
@@ -209,11 +215,13 @@ const Sniper = () => {
           {image === "" ? (
             <Webcam
               audio={true}
+              muted={checkMute}
               ref={webcamRef}
               screenshotFormat="image/jpeg"
               screenshotQuality="0.95"
               videoConstraints={{ ...VideoConstraints, facingMode: camMode }}
-              audioConstraints={{ ...AudioConstraints }}
+              // audioConstraints={{ ...AudioConstraints }}
+              // audioConstraints={false}
               className="webcam-stream"
             />
           ) : (
